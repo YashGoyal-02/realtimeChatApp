@@ -11,7 +11,7 @@ import SenderMessage from './SenderMessage';
 import ReceiverMessage from './ReceiverMessage';
 import axios from 'axios';
 import { serverUrl } from '../main';
-import { setMessages } from '../redux/messageSlice';
+import { appendMessageForUser, setMessagesForUser } from '../redux/messageSlice';
 
 function MessageArea() {
   let {selectedUser,userData,socket} = useSelector(state => state.user)
@@ -26,7 +26,14 @@ function MessageArea() {
 
   let image = useRef()
 
-  let {messages} = useSelector(state => state.message); // taking the messages using useSelector hook from redux
+  const messagesByUser = useSelector(state => state.message.messagesByUser);
+  const activeMessages = selectedUser?._id ? (messagesByUser[selectedUser._id] || []) : [];
+  // keep a ref to always have the latest messages inside socket handler
+  const messagesRef = useRef(activeMessages);
+
+  useEffect(() => {
+    messagesRef.current = activeMessages;
+  }, [activeMessages]);
 
   const handleImage = (e) => {
     let file = e.target.files[0]
@@ -46,7 +53,7 @@ function MessageArea() {
         formData.append("image",backendImage)
       }
       let result = await axios.post(`${serverUrl}/api/message/send/${selectedUser._id}`,formData,{withCredentials:true})
-      dispatch(setMessages([...messages,result.data])) // previuos messages remains and adding the new messages using dispatch
+      dispatch(appendMessageForUser({ userId: selectedUser._id, message: result.data }))
       setInput("");
       setFrontendImage(null);
       setBackendImage(null);
@@ -60,13 +67,24 @@ function MessageArea() {
     setShowPicker(false)
   }
 
-  // updating message using socktio
-  useEffect(()=>{
-    socket?.on("newMessage" , (mess) => {
-      dispatch(setMessages([...messages,mess]))
-    })
-    return () => socket?.off("newMessage")
-  },[messages,setMessages])
+  // update messages via socket.io only for the active conversation
+  useEffect(() => {
+    const handler = (mess) => {
+      if (!selectedUser || !userData) return;
+      const senderId = String(mess?.sender || "");
+      const receiverId = String(mess?.receiver || "");
+      const activeUserId = String(selectedUser?._id || "");
+      const myId = String(userData?._id || "");
+      // Only append if the message belongs to the active conversation and is addressed to this user
+      if (senderId === activeUserId && receiverId === myId) {
+        // Append to the active conversation only
+        dispatch(appendMessageForUser({ userId: activeUserId, message: mess }));
+      }
+    };
+
+    socket?.on("newMessage", handler);
+    return () => socket?.off("newMessage", handler);
+  }, [socket, selectedUser, userData, dispatch])
 
   return (
     <div className={`lg:w-[70%] relative ${selectedUser?"flex":"hidden"} lg:flex w-full h-full bg-slate-200 border-l-2 border-gray-300 `}>
@@ -87,10 +105,21 @@ function MessageArea() {
 
 
 
-          {messages && messages.map((mess)=>(
-            // if the message is send by the user than sendermessage else receivermessage
-            mess.sender==userData._id?<SenderMessage image={mess.image} message = {mess.message}/>:<ReceiverMessage image={mess.image} message = {mess.message}/> // passing two props in SenderMessage image,message. So, we can pass it in sendermessage and receivermessage.
-          ))}
+          {activeMessages && activeMessages
+            .filter((m) => {
+              const s = String(m?.sender || "");
+              const r = String(m?.receiver || "");
+              const me = String(userData?._id || "");
+              const other = String(selectedUser?._id || "");
+              return (s === me && r === other) || (s === other && r === me);
+            })
+            .map((mess, idx) => (
+              String(mess?.sender || "") === String(userData?._id || "") ? (
+                <SenderMessage key={mess._id || idx} image={mess.image} message={mess.message} />
+              ) : (
+                <ReceiverMessage key={mess._id || idx} image={mess.image} message={mess.message} />
+              )
+            ))}
 
         </div>
         </div>
