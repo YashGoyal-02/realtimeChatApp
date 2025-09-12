@@ -9,7 +9,7 @@ const server = http.createServer(app) // ab hum app ke through routes bna lenge 
 
 const io = new Server(server,{ // creating server using socket.io
     cors : {
-        origin : "http://localhost:5173"//"https://realtimechatapp-zpjs.onrender.com" , // frontend URl  "http://localhost:5173"
+        origin : "https://realtimechatapp-zpjs.onrender.com" , // frontend URl  "http://localhost:5173"
     }
 })
 
