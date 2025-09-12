@@ -12,7 +12,7 @@ dotenv.config();
 const port = process.env.PORT || 5000
 
 app.use(cors({ // here we need two things one is origin (frontend url) , credentials
-    origin : "https://realtimechatapp-zpjs.onrender.com", // "http://localhost:5173"
+    origin :  "https://realtimechatapp-zpjs.onrender.com", //"http://localhost:5173",
     credentials : true
 }));
 app.use(express.json()); // setting up a middleware to the req. from the body
