@@ -87,10 +87,10 @@ function MessageArea() {
   }, [socket, selectedUser, userData, dispatch])
 
   return (
-    <div className={`lg:w-[70%] relative ${selectedUser?"flex":"hidden"} lg:flex w-full h-full bg-slate-200 border-l-2 border-gray-300 `}>
+    <div className={`lg:w-[70%] relative ${selectedUser?"flex":"hidden"} lg:flex w-full h-full bg-slate-300 border-l-2 border-gray-300 `}>
       {selectedUser && 
       <div className='w-full h-[100vh] flex flex-col'>
-      <div className="w-full h-[100px] bg-[#1395c0] rounded-b-[30px] shadow-gray-400 shadow-lg flex items-center px-[20px] gap-[20px]">
+      <div className="w-full h-[100px] bg-[#2196f3] rounded-b-[30px] shadow-gray-400 shadow-lg flex items-center px-[20px] gap-[20px]">
         <div className='cursor-pointer' onClick = {()=>dispatch(setSelectedUser(null))}>
             <IoIosArrowRoundBack className='w-[40px] h-[40px] text-white'/>
           </div>
@@ -133,7 +133,7 @@ function MessageArea() {
 
         {selectedUser && <div className='w-full lg:w-[70%] h-[100px] fixed bottom-[20px] flex items-center justify-center '>
           <img src={frontendImage} alt="" className='w-[80px] absolute bottom-[100px] right-[20%] rounded-lg shadow-gray-400 shadow-lg'/>
-          <form className='w-[95%] lg:w-[70%] h-[60px] bg-[rgb(23,151,194)] rounded-full flex items-center gap-[20px] px-[20px] relative' onSubmit={handleSendMessage}>
+          <form className='w-[95%] lg:w-[70%] h-[60px] bg-[#2196f3] rounded-full flex items-center gap-[20px] px-[20px] relative' onSubmit={handleSendMessage}>
 
           <div onClick={()=>setShowPicker(prev=>!prev)}>
           <RiEmojiStickerLine className='w-[25px] h-[25px] text-white cursor-pointer'/>

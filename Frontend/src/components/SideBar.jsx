@@ -48,7 +48,7 @@ function SideBar() {
 
   return (
     <div className={`lg:w-[30%] w-full h-full overflow-hidden lg:block bg-slate-200 relative ${!selectedUser?"block":"hidden"}`}>
-      <div className='w-[60px] h-[60px] mt-[10px] bg-[#20c7ff] rounded-full overflow-hidden flex justify-center items-center shadow-gray-500 shadow-lg fixed bottom-[20px] left-[10px] text-gray-700 cursor-pointer' onClick={handleLogOut}>
+      <div className='w-[60px] h-[60px] mt-[10px] bg-[#2196f3] rounded-full overflow-hidden flex justify-center items-center shadow-gray-500 shadow-lg fixed bottom-[20px] left-[10px] text-gray-700 cursor-pointer' onClick={handleLogOut}>
           <BiLogOutCircle className='w-[25px] h-[25px]'/>
           </div>
           {input.length > 0 && <div className='flex absolute top-[250px] items-center pt-[20px] bg-white w-full h-[500px] overflow-y-auto flex-col gap-[10px] z-[150] shadow-lg'>
@@ -66,7 +66,7 @@ function SideBar() {
                           <img src={user.image || dp} alt="" className='h-[100%]'/>
                           </div>
                           {onlineUsers?.includes(user._id) && 
-                          <span className='w-[15px] h-[15px] rounded-full absolute bottom-[6px] right-[-1px] bg-[#3aff20] shadow-gray-500 shadow-md'></span>}
+                          <span className='w-[15px] h-[15px] rounded-full absolute bottom-[6px] right-[-1px] bg-[#2196f3] shadow-gray-500 shadow-md'></span>}
                           </div>
                   <h1 className='text-gray-800 font-semibold text-[20px]'>{user.name || user.userName}</h1>
                 </div>
@@ -74,7 +74,7 @@ function SideBar() {
                   
               </div>}
           
-      <div className="w-full h-[300px] bg-[#20c7ff] rounded-b-[30%] shadow-gray-400 shadow-lg flex flex-col justify-center px-[20px]">
+      <div className="w-full h-[300px] bg-[#2196f3] rounded-b-[30%] shadow-gray-400 shadow-lg flex flex-col justify-center px-[20px]">
         <h1 className='text-white font-bold text-[25px]'>Talksy</h1>
         <div className='w-full flex justify-between items-center'>
             <h1 className='text-gray-800 font-bold text-[25px]'>Hii , {userData.name || "user"}</h1>
@@ -104,7 +104,7 @@ function SideBar() {
               <div className='w-[60px] h-[60px] rounded-full overflow-hidden flex justify-center items-center cursor-pointer' onClick={()=>{dispatch(setSelectedUser(user))}}>
               <img src={user.image || dp} alt="" className='h-[100%]'/>
               </div>
-              <span className='w-[15px] h-[15px] rounded-full absolute bottom-[6px] right-[-1px] bg-[#3aff20] shadow-gray-500 shadow-md'></span>
+              <span className='w-[15px] h-[15px] rounded-full absolute bottom-[6px] right-[-1px] bg-[#2196f3] shadow-gray-500 shadow-md'></span>
               </div>
               );
             })}
@@ -123,7 +123,7 @@ function SideBar() {
               <img src={user.image || dp} alt="" className='h-[100%]'/>
               </div>
               {onlineUsers?.includes(user._id) && 
-              <span className='w-[15px] h-[15px] rounded-full absolute bottom-[6px] right-[-1px] bg-[#3aff20] shadow-gray-500 shadow-md'></span>}
+              <span className='w-[15px] h-[15px] rounded-full absolute bottom-[6px] right-[-1px] bg-[#2196f3] shadow-gray-500 shadow-md'></span>}
               </div>
       <h1 className='text-gray-800 font-semibold text-[20px]'>{user.name || user.userName}</h1>
     </div>
